@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { KnowledgeSearch } from "@/components/KnowledgeSearch";
 import { ModulePage } from "@/components/ModulePage";
 import { T } from "@/components/T";
 import { getModule } from "@/lib/modules";
@@ -36,12 +37,14 @@ export default function Page() {
           </li>
           <li>
             <T
-              fr="Plusieurs niveaux d'accès sont prévus ; un document restreint n'est jamais transmis à un utilisateur non autorisé, y compris par l'assistant."
-              en="Several access levels are planned; a restricted document is never passed to an unauthorised user, including through the assistant."
+              fr="Trois niveaux d'accès : public, réservé aux membres, restreint. Un document restreint n'est jamais servi par le site ; les réponses générées ne s'appuient que sur des documents publics, les seuls transmis au fournisseur du modèle."
+              en="Three access levels: public, members only, restricted. A restricted document is never served by the site; generated answers rely only on public documents, the only ones sent to the model provider."
             />
           </li>
         </ul>
       }
-    />
+    >
+      <KnowledgeSearch />
+    </ModulePage>
   );
 }

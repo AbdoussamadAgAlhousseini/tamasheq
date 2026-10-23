@@ -3,6 +3,14 @@
 ## [Non publié]
 
 ### Ajouté
+- Phase 5 : traduction expérimentale (`POST /api/v1/translate`) appuyée sur les entrées
+  validées du dictionnaire, avec ambiguïtés, variantes et entrées utilisées ; corrections par
+  les locuteurs versées au corpus. Bibliothèque des savoirs (migration `0003`) : documents à
+  trois niveaux d'accès, passages indexés, recherche plein texte, réponses citées fondées sur
+  les seuls documents publics (`POST /api/v1/knowledge/ask`). Couche d'accès au modèle
+  partagée, routes de cycle de vie communes, import `knowledge` en ligne de commande. Outils
+  d'évaluation : chrF++ et notation humaine (traduction), rappel@k et MRR (recherche).
+  Pages `/translate` et `/knowledge` fonctionnelles.
 - Phase 4 : dictionnaire et corpus. Migration `0002` (sources, entrées, graphies, sens,
   exemples, textes, conventions, révisions, exports, jetons), garanties en base (forme
   d'origine immuable, journal append-only), jetons d'accès et rôles, contrôle à quatre yeux,

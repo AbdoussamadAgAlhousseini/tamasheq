@@ -21,7 +21,8 @@ const NAMES: Record<CapabilityName, { fr: string; en: string }> = {
   chat: { fr: "Assistant", en: "Assistant" },
   translation: { fr: "Traduction", en: "Translation" },
   dictionary: { fr: "Dictionnaire", en: "Dictionary" },
-  knowledge: { fr: "Savoirs", en: "Knowledge" },
+  knowledge: { fr: "Recherche documentaire", en: "Document search" },
+  knowledge_qa: { fr: "Réponses citées", en: "Cited answers" },
   asr: { fr: "Reconnaissance vocale", en: "Speech recognition" },
   tts: { fr: "Synthèse vocale", en: "Speech synthesis" },
 };

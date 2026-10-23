@@ -63,8 +63,16 @@ Indépendamment du code applicatif, PostgreSQL refuse :
   (`original_text`) ;
 - toute modification ou suppression du journal des révisions.
 
+## Niveaux d'accès des savoirs
+
+| Niveau | Consultable | Transmis à un modèle externe |
+|---|---|---|
+| `public` | par tous | oui (passages, pour les réponses citées) |
+| `community` | avec un compte | **non** |
+| `restricted` | **jamais par le site** ; accès décidé hors ligne | **non** |
+
 ## Questions ouvertes
 
 - Instance communautaire de gouvernance et procédure d'appel (D5).
-- Niveaux d'accès communautaires pour les savoirs (phase 5).
+- Qui peut obtenir un compte « membre » et donc lire les documents `community`.
 - Durée de conservation des contenus retirés (aujourd'hui : conservés, marqués, pour la trace).

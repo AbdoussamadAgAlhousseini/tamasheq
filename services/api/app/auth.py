@@ -31,12 +31,13 @@ def issue_token(session: Session, user: User) -> str:
     return token
 
 
-def current_user(
+def optional_user(
     credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(_bearer)],
     session: Annotated[Session, Depends(get_session)],
-) -> User:
+) -> User | None:
+    """Personne connectée, ou None sans jeton. Un jeton invalide est refusé, pas ignoré."""
     if credentials is None:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Authentification requise.")
+        return None
     token = session.scalar(
         select(ApiToken).where(
             ApiToken.token_hash == hash_token(credentials.credentials),
@@ -46,6 +47,12 @@ def current_user(
     if token is None or not token.user.is_active:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Jeton invalide ou révoqué.")
     return token.user
+
+
+def current_user(user: Annotated[User | None, Depends(optional_user)]) -> User:
+    if user is None:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Authentification requise.")
+    return user
 
 
 def require(*roles: Role) -> Callable[[User], User]:

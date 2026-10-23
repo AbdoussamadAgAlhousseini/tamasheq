@@ -3,7 +3,7 @@ from functools import lru_cache
 from pydantic import PostgresDsn, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from app.ai.anthropic_chat import Effort
+from app.ai.anthropic_backend import Effort
 
 
 class Settings(BaseSettings):

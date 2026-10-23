@@ -9,7 +9,9 @@ from app.auth import issue_token
 from app.config import get_settings
 from app.db import get_engine
 from app.models import Role, User
-from app.routers.chat import get_chat_provider, get_limiter
+from app.routers.chat import get_backend, get_chat_provider, get_limiter
+from app.routers.knowledge import get_answer_provider
+from app.routers.translate import get_translation_provider
 
 
 @pytest.fixture(scope="session")
@@ -27,7 +29,14 @@ def _no_api_key(monkeypatch: pytest.MonkeyPatch) -> None:
 
 @pytest.fixture(autouse=True)
 def _reset_caches() -> Iterator[None]:
-    for cached in (get_settings, get_chat_provider, get_limiter):
+    for cached in (
+        get_settings,
+        get_backend,
+        get_chat_provider,
+        get_translation_provider,
+        get_answer_provider,
+        get_limiter,
+    ):
         cached.cache_clear()
     yield
     if get_engine.cache_info().currsize:
@@ -47,7 +56,8 @@ def migrated(database_available: bool) -> None:
 
 CONTENT_TABLES = (
     "dataset_items, datasets, revisions, lexical_examples, lexical_senses, lexical_spellings, "
-    "lexical_entries, corpus_texts, orthography_conventions, sources, api_tokens, users"
+    "lexical_entries, corpus_texts, knowledge_chunks, knowledge_documents, "
+    "orthography_conventions, sources, api_tokens, users"
 )
 
 

@@ -4,17 +4,19 @@ from datetime import date, datetime
 from typing import Any
 
 from sqlalchemy import (
+    Computed,
     Date,
     DateTime,
     Enum,
     ForeignKey,
+    Index,
     Integer,
     String,
     Text,
     UniqueConstraint,
     func,
 )
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import JSONB, TSVECTOR
 from sqlalchemy.orm import Mapped, declared_attr, mapped_column, relationship
 
 from app.db import Base
@@ -235,6 +237,63 @@ class CorpusText(Governed, Base):
     notes: Mapped[str | None] = mapped_column(Text)
 
     source: Mapped[Source] = relationship()
+
+
+class AccessLevel(enum.StrEnum):
+    PUBLIC = "public"  # lisible par tous ; seul niveau transmis à un modèle externe
+    COMMUNITY = "community"  # personnes ayant un compte
+    RESTRICTED = "restricted"  # jamais servi par l'API ; accès décidé hors ligne
+
+
+class Theme(enum.StrEnum):
+    ORAL_HISTORY = "oral_history"
+    PROVERBS = "proverbs"
+    CULTURE = "culture"
+    PASTORALISM = "pastoralism"
+    ENVIRONMENT = "environment"
+    PLANTS = "plants"
+    TOPONYMY = "toponymy"
+    CRAFTS = "crafts"
+    INTERGENERATIONAL = "intergenerational"  # savoirs des femmes, des jeunes et des anciens
+    LANGUAGE = "language"
+
+
+class KnowledgeDocument(Governed, Base):
+    """Document de la bibliothèque des savoirs. `body` n'est jamais modifié (contrainte en base)."""
+
+    __tablename__ = "knowledge_documents"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    title: Mapped[str] = mapped_column(Text)
+    body: Mapped[str] = mapped_column(Text)
+    theme: Mapped[Theme] = mapped_column(_enum(Theme, "knowledge_theme"))
+    access_level: Mapped[AccessLevel] = mapped_column(_enum(AccessLevel, "access_level"))
+    # Nom à créditer, seulement si la personne a accepté d'être identifiée.
+    author_credit: Mapped[str | None] = mapped_column(Text)
+
+    source: Mapped[Source] = relationship()
+    chunks: Mapped[list["KnowledgeChunk"]] = relationship(
+        back_populates="document", cascade="all, delete-orphan", order_by="KnowledgeChunk.position"
+    )
+
+
+class KnowledgeChunk(Base):
+    """Passage d'un document, unité de recherche et de citation."""
+
+    __tablename__ = "knowledge_chunks"
+    __table_args__ = (Index("ix_knowledge_chunks_tsv", "tsv", postgresql_using="gin"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    document_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("knowledge_documents.id"))
+    position: Mapped[int] = mapped_column(Integer)
+    text: Mapped[str] = mapped_column(Text)
+    # Configuration « simple » : aucune racinisation ni liste de mots propre à une langue,
+    # valable pour le tamasheq comme pour le français et l'anglais.
+    tsv: Mapped[Any] = mapped_column(
+        TSVECTOR, Computed("to_tsvector('simple'::regconfig, text)", persisted=True)
+    )
+
+    document: Mapped[KnowledgeDocument] = relationship(back_populates="chunks")
 
 
 class Revision(Base):

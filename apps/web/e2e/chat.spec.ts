@@ -76,7 +76,7 @@ test("erreur : message conservé dans le champ et explication affichée", async 
   await input(page).fill("Bonjour");
   await page.getByRole("button", { name: "Envoyer" }).click();
   await expect(
-    page.getByRole("alert").getByText("Trop de messages en peu de temps. Réessayez dans une minute."),
+    page.getByRole("alert").getByText("Trop de requêtes en peu de temps. Réessayez dans une minute."),
   ).toBeVisible();
   await expect(input(page)).toHaveValue("Bonjour");
   await expect(page.locator("li[data-role]")).toHaveCount(0);

@@ -1,6 +1,6 @@
 # Sécurité
 
-État au 2026-10-23 (phase 4). À compléter à chaque phase ; audit complet prévu en phase 8.
+État au 2026-10-23 (phase 5). À compléter à chaque phase ; audit complet prévu en phase 8.
 
 ## Secrets
 
@@ -25,6 +25,17 @@
   client). Ce point devra être réexaminé avant la recherche documentaire (phase 5).
 - Les messages sont transmis au fournisseur du modèle (Anthropic) ; l'interface demande de ne
   pas y écrire d'informations personnelles ni de savoirs restreints.
+
+## Traduction et réponses citées
+
+- Seuls les contenus **publics** sortent vers le fournisseur du modèle : entrées du
+  dictionnaire validées et publiables (glossaire), passages de documents validés, publiables
+  et de niveau public. Les documents « membres » et restreints ne lui sont jamais transmis.
+- Injection de consignes : le texte à traduire, la question et les passages sont encadrés et
+  échappés (`<`, `>`, `&`), et les consignes demandent de les traiter comme des données. Le
+  modèle n'a aucun outil ; les citations sont limitées par schéma aux passages fournis, puis
+  revérifiées côté serveur.
+- La session de base de données est fermée avant l'appel au modèle.
 
 ## Authentification
 

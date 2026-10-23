@@ -19,7 +19,7 @@ class Capability(BaseModel):
 
 # Source de vérité de ce que l'application affirme savoir faire. Un statut ne passe à
 # « evaluated » qu'avec des résultats publiés dans evaluation/ (voir docs/evaluation.md).
-NOT_YET = ("translation", "knowledge", "asr", "tts")
+NOT_YET = ("asr", "tts")
 
 
 @router.get("/capabilities")
@@ -37,7 +37,25 @@ def capabilities(
         status="experimental",
         note="Fonction active ; seules les entrées validées par un réviseur sont publiées.",
     )
-    return [chat, dictionary] + [
+    ai = chat_provider is not None
+    translation = Capability(
+        name="translation",
+        status="experimental" if ai else "not_available",
+        note="Qualité non évaluée." if ai else "Traduction non configurée.",
+    )
+    knowledge = Capability(
+        name="knowledge",
+        status="experimental",
+        note="Recherche active ; seuls les documents validés et autorisés sont visibles.",
+    )
+    knowledge_qa = Capability(
+        name="knowledge_qa",
+        status="experimental" if ai else "not_available",
+        note="Réponses fondées sur les documents publics, non évaluées."
+        if ai
+        else "Réponses non configurées.",
+    )
+    return [chat, dictionary, translation, knowledge, knowledge_qa] + [
         Capability(name=name, status="not_available", note="Pas encore développé.")
         for name in NOT_YET
     ]

@@ -12,11 +12,25 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.models import CorpusText, Dataset, DatasetItem, LexicalEntry, Revision, Role, Status, User
+from app.models import (
+    CorpusText,
+    Dataset,
+    DatasetItem,
+    KnowledgeDocument,
+    LexicalEntry,
+    Revision,
+    Role,
+    Status,
+    User,
+)
 
-Content = LexicalEntry | CorpusText
+Content = LexicalEntry | CorpusText | KnowledgeDocument
 
-ENTITY: dict[type, str] = {LexicalEntry: "lexical_entry", CorpusText: "corpus_text"}
+ENTITY: dict[type, str] = {
+    LexicalEntry: "lexical_entry",
+    CorpusText: "corpus_text",
+    KnowledgeDocument: "knowledge_document",
+}
 
 
 class GovernanceError(Exception):

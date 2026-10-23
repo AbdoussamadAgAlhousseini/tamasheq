@@ -6,7 +6,8 @@ import httpx2
 import pytest
 from anthropic.types.beta import BetaMessage
 
-from app.ai.anthropic_chat import FALLBACK_BETA, AnthropicChatProvider
+from app.ai.anthropic_backend import FALLBACK_BETA, AnthropicBackend
+from app.ai.anthropic_chat import AnthropicChatProvider
 from app.ai.chat import ChatMessage, ChatProviderError
 from app.ai.prompts import CHAT_SYSTEM_PROMPT
 
@@ -46,7 +47,9 @@ class StubClient:
 def provider(result: BetaMessage | Exception) -> tuple[AnthropicChatProvider, StubMessages]:
     client = StubClient(result)
     return (
-        AnthropicChatProvider("k", "claude-opus-5-5", "medium", client=client),  # type: ignore[arg-type]
+        AnthropicChatProvider(
+            AnthropicBackend("k", "claude-opus-5-5", "medium", client=client)  # type: ignore[arg-type]
+        ),
         client.messages,
     )
 

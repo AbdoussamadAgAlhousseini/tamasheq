@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { Translator } from "@/components/Translator";
 import { ModulePage } from "@/components/ModulePage";
 import { T } from "@/components/T";
 import { getModule } from "@/lib/modules";
@@ -42,12 +43,14 @@ export default function Page() {
           </li>
           <li>
             <T
-              fr="Les modèles candidats (par exemple NLLB-200) doivent d'abord être évalués sur un jeu de test indépendant, jugé par des locuteurs."
-              en="Candidate models (for example NLLB-200) must first be evaluated on an independent test set, judged by speakers."
+              fr="La version actuelle utilise un modèle généraliste (Claude, d'Anthropic) guidé par les entrées validées du dictionnaire. D'autres modèles, comme NLLB-200, seront comparés sur le même jeu de test, jugé par des locuteurs."
+              en="The current version uses a general-purpose model (Anthropic's Claude) guided by the dictionary's validated entries. Other models, such as NLLB-200, will be compared on the same test set, judged by speakers."
             />
           </li>
         </ul>
       }
-    />
+    >
+      <Translator />
+    </ModulePage>
   );
 }

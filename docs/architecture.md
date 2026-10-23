@@ -56,6 +56,11 @@ Choix techniques :
 | `POST /api/v1/dictionary` | Contribution (jeton requis), statut « en attente » |
 | `POST /api/v1/dictionary/{id}/validate` · `/restrict` · `/withdraw` | Cycle de vie (réviseur, ou contributeur pour le retrait) |
 | `GET /api/v1/dictionary/{id}/history` · `GET /api/v1/review/dictionary` | Historique et file de relecture (réviseur) |
+| `POST /api/v1/translate` | Traduction expérimentale taq ⇄ fr/en, appuyée sur les entrées validées du dictionnaire |
+| `POST /api/v1/translate/corrections` | Correction par un locuteur (jeton requis), versée au corpus « en attente » |
+| `GET /api/v1/knowledge?q=&theme=` · `GET /api/v1/knowledge/{id}` | Bibliothèque : public pour tous, « membres » avec un compte, jamais restreint |
+| `POST /api/v1/knowledge/ask` | Réponse citée, fondée sur les seuls documents publics et validés |
+| `POST /api/v1/knowledge/{id}/validate` · `/restrict` · `/withdraw` · `GET …/history` | Cycle de vie des documents |
 | `GET /docs` | Documentation OpenAPI générée |
 
 ## Couche IA
@@ -69,7 +74,30 @@ Réglages actuels (variables d'environnement) : modèle `claude-opus-5-5`, effor
 (`fallbacks: "default"`) si le modèle décline une requête. Les consignes données au modèle sont
 dans `app/ai/prompts.py` ; toute modification exige une nouvelle passe d'évaluation.
 
-Sans `ANTHROPIC_API_KEY`, l'assistant est simplement `not_available`.
+Sans `ANTHROPIC_API_KEY`, l'assistant, la traduction et les réponses citées sont
+`not_available` ; le dictionnaire et la recherche documentaire fonctionnent sans modèle.
+
+### Traduction
+
+`app/ai/translation.py` : les entrées **validées et publiables** du dictionnaire qui
+correspondent aux mots du texte (`app/services/glossary.py`) sont fournies au modèle comme
+glossaire ; la sortie est structurée (traduction, autres traductions, ambiguïtés, remarques,
+entrées utilisées). NLLB-200 et d'autres modèles pourront être ajoutés comme autres
+`TranslationProvider` et comparés sur le même jeu de test.
+
+### Recherche documentaire et réponses citées (RAG)
+
+1. La question est découpée en termes (mots-outils français et anglais retirés).
+2. Recherche plein texte PostgreSQL (configuration `simple`, sans règle propre à une langue)
+   dans les passages des documents **validés, publiables et publics**.
+3. Aucun passage : réponse « documentation insuffisante », **sans appel au modèle**.
+4. Sinon, au plus 6 passages sont transmis, identifiés P1…P6 ; le modèle répond en
+   citant les passages (sortie structurée, citations limitées aux identifiants fournis).
+5. Une réponse sans citation est marquée « documentation insuffisante ».
+
+Les documents « membres » sont consultables avec un compte mais **jamais transmis au
+modèle** ; les documents restreints ne sont jamais servis. pgvector n'est pas utilisé : il
+ne sera ajouté que si l'évaluation de la recherche montre que la recherche lexicale ne suffit pas.
 
 L'endpoint `capabilities` est la source de vérité de ce que l'interface affiche comme
 disponible : l'interface ne doit pas annoncer une fonction que l'API déclare indisponible.
@@ -79,6 +107,7 @@ disponible : l'interface ne doit pas annoncer une fonction que l'API déclare in
 | Migration | Tables |
 |---|---|
 | `0001` | `users` (pseudonyme public, e-mail privé, rôle) |
+| `0003` | `knowledge_documents` (niveau d'accès, thème, crédit), `knowledge_chunks` (passages, index plein texte) |
 | `0002` | `api_tokens` (empreintes de jetons), `sources` (provenance et droits), `orthography_conventions`, `lexical_entries` / `lexical_spellings` / `lexical_senses` / `lexical_examples`, `corpus_texts`, `revisions` (journal append-only), `datasets` / `dataset_items` (exports traçables) |
 
 Règles de gouvernance : [data-governance.md](data-governance.md). Formats d'import :

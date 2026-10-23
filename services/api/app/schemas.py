@@ -1,12 +1,13 @@
 """Schémas d'entrée communs à l'API et aux imports : une donnée importée passe exactement par
 les mêmes contrôles qu'une donnée saisie."""
 
+import unicodedata
 from datetime import date
 from typing import Self
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-from app.models import Script
+from app.models import AccessLevel, Script, Theme
 from app.text import detect_script, normalize
 
 Text = Field(min_length=1, max_length=2000)
@@ -122,4 +123,21 @@ class CorpusTextIn(Rights):
     @model_validator(mode="after")
     def check(self) -> Self:
         self.text, self.script = checked(self.text, self.script, "texte")
+        return self
+
+
+class KnowledgeDocumentIn(Rights):
+    title: str = Field(min_length=1, max_length=300)
+    body: str = Field(min_length=1, max_length=200_000)
+    theme: Theme
+    access_level: AccessLevel
+    author_credit: str | None = Field(default=None, max_length=300)
+    language: str = Field(default="fra", pattern=r"^[a-z]{3}$")
+
+    @model_validator(mode="after")
+    def normalized(self) -> Self:
+        # Seuls la composition Unicode et les fins de ligne sont normalisées : les paragraphes
+        # sont conservés pour le découpage en passages.
+        self.title = normalize(self.title)
+        self.body = unicodedata.normalize("NFC", self.body.replace("\r\n", "\n")).strip()
         return self

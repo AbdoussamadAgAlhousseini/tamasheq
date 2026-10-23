@@ -1,34 +1,26 @@
 import uuid
 from datetime import datetime
-from typing import Annotated, Any
+from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, HTTPException, Query, status
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
-from app.auth import require
-from app.db import get_session
-from app.governance import GovernanceError, NotAllowed, restrict, validate, withdraw
 from app.models import (
     LexicalEntry,
     LexicalSense,
-    Revision,
-    Role,
     Script,
     Source,
     SourceKind,
     Status,
     User,
 )
+from app.routers.lifecycle import DB, Contributor, Created, Reviewer, add_lifecycle_routes
 from app.schemas import LexicalEntryIn
 from app.services import lexicon
 
 router = APIRouter(prefix="/api/v1", tags=["dictionnaire"])
-
-Contributor = Annotated[User, Depends(require(Role.CONTRIBUTOR, Role.REVIEWER, Role.ADMIN))]
-Reviewer = Annotated[User, Depends(require(Role.REVIEWER, Role.ADMIN))]
-DB = Annotated[Session, Depends(get_session)]
 
 
 class SpellingOut(BaseModel):
@@ -137,11 +129,6 @@ class ContributionIn(LexicalEntryIn):
     )
 
 
-class Created(BaseModel):
-    id: uuid.UUID
-    status: Status
-
-
 def personal_source(session: Session, user: User) -> Source:
     """Source des contributions directes d'une personne. L'accord d'entraînement est donné
     contribution par contribution (`allow_training`), d'où `license_allows_training=True`."""
@@ -176,114 +163,6 @@ def contribute(body: ContributionIn, user: Contributor, session: DB) -> Created:
     return Created(id=entry.id, status=entry.status)
 
 
-def _refused(e: GovernanceError) -> HTTPException:
-    code = status.HTTP_403_FORBIDDEN if isinstance(e, NotAllowed) else status.HTTP_409_CONFLICT
-    return HTTPException(code, str(e))
-
-
-def _load(session: Session, entry_id: uuid.UUID) -> LexicalEntry:
-    entry = session.get(LexicalEntry, entry_id)
-    if entry is None:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, "Entrée introuvable.")
-    return entry
-
-
-class Decision(BaseModel):
-    reason: str | None = Field(default=None, max_length=2000)
-
-
-class RequiredReason(BaseModel):
-    reason: str = Field(min_length=1, max_length=2000)
-
-
-@router.post("/dictionary/{entry_id}/validate")
-def validate_entry(entry_id: uuid.UUID, body: Decision, user: Reviewer, session: DB) -> Created:
-    entry = _load(session, entry_id)
-    try:
-        validate(session, entry, user, body.reason)
-    except GovernanceError as e:
-        raise _refused(e) from e
-    session.commit()
-    return Created(id=entry.id, status=entry.status)
-
-
-@router.post("/dictionary/{entry_id}/restrict")
-def restrict_entry(
-    entry_id: uuid.UUID, body: RequiredReason, user: Reviewer, session: DB
-) -> Created:
-    entry = _load(session, entry_id)
-    try:
-        restrict(session, entry, user, body.reason)
-    except GovernanceError as e:
-        raise _refused(e) from e
-    session.commit()
-    return Created(id=entry.id, status=entry.status)
-
-
-class DatasetRef(BaseModel):
-    name: str
-    purpose: str
-    created_at: datetime
-
-
-class Withdrawn(BaseModel):
-    id: uuid.UUID
-    status: Status
-    datasets: list[DatasetRef] = Field(
-        description="Exports déjà produits qui contenaient l'entrée : à régénérer ou signaler."
-    )
-
-
-@router.post("/dictionary/{entry_id}/withdraw")
-def withdraw_entry(
-    entry_id: uuid.UUID, body: RequiredReason, user: Contributor, session: DB
-) -> Withdrawn:
-    entry = _load(session, entry_id)
-    try:
-        datasets = withdraw(session, entry, user, body.reason)
-    except GovernanceError as e:
-        raise _refused(e) from e
-    session.commit()
-    return Withdrawn(
-        id=entry.id,
-        status=entry.status,
-        datasets=[
-            DatasetRef(name=d.name, purpose=d.purpose.value, created_at=d.created_at)
-            for d in datasets
-        ],
-    )
-
-
-class RevisionOut(BaseModel):
-    action: str
-    actor_id: uuid.UUID | None
-    at: datetime
-    before: dict[str, Any] | None
-    after: dict[str, Any] | None
-    reason: str | None
-
-
-@router.get("/dictionary/{entry_id}/history")
-def history(entry_id: uuid.UUID, _: Reviewer, session: DB) -> list[RevisionOut]:
-    _load(session, entry_id)
-    revisions = session.scalars(
-        select(Revision)
-        .where(Revision.entity == "lexical_entry", Revision.entity_id == entry_id)
-        .order_by(Revision.id)
-    )
-    return [
-        RevisionOut(
-            action=r.action,
-            actor_id=r.actor_id,
-            at=r.at,
-            before=r.before,
-            after=r.after,
-            reason=r.reason,
-        )
-        for r in revisions
-    ]
-
-
 class ReviewItem(BaseModel):
     id: uuid.UUID
     headword: str
@@ -316,3 +195,6 @@ def review_queue(
         )
         for e in entries
     ]
+
+
+add_lifecycle_routes(router, "/dictionary", LexicalEntry)

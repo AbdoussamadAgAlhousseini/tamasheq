@@ -18,7 +18,7 @@ from typing import Any, Literal
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
-from app.governance import ENTITY, Content
+from app.governance import ENTITY
 from app.models import (
     CorpusText,
     Dataset,
@@ -33,6 +33,9 @@ from app.models import (
 
 Kind = Literal["lexicon", "corpus"]
 
+# Les documents de savoirs ne sont pas exportables à ce stade.
+Exportable = LexicalEntry | CorpusText
+
 
 def _source(source: Source) -> dict[str, Any]:
     return {
@@ -44,7 +47,7 @@ def _source(source: Source) -> dict[str, Any]:
     }
 
 
-def _common(obj: Content) -> dict[str, Any]:
+def _common(obj: Exportable) -> dict[str, Any]:
     return {
         "id": str(obj.id),
         "language": obj.language,
@@ -92,11 +95,11 @@ def serialize_text(text: CorpusText) -> dict[str, Any]:
     }
 
 
-def serialize(obj: Content) -> dict[str, Any]:
+def serialize(obj: Exportable) -> dict[str, Any]:
     return serialize_entry(obj) if isinstance(obj, LexicalEntry) else serialize_text(obj)
 
 
-def select_items(session: Session, kind: Kind, purpose: DatasetPurpose) -> list[Content]:
+def select_items(session: Session, kind: Kind, purpose: DatasetPurpose) -> list[Exportable]:
     model: type[LexicalEntry] | type[CorpusText] = LexicalEntry if kind == "lexicon" else CorpusText
     query = (
         select(model)

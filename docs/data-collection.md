@@ -55,6 +55,16 @@ Mêmes champs de droits, plus : `text` (obligatoire, texte original), `script`,
 `tifinagh_text` (forme tifinagh validée, entièrement en tifinagh), `translation_fr`,
 `translation_en`, `notes`.
 
+## Format : bibliothèque des savoirs (`import knowledge`)
+
+Mêmes champs de droits, plus : `title`, `body` (texte intégral, paragraphes séparés par une
+ligne vide ; jamais modifié ensuite), `theme` (`oral_history`, `proverbs`, `culture`,
+`pastoralism`, `environment`, `plants`, `toponymy`, `crafts`, `intergenerational`,
+`language`), `access_level` (`public`, `community`, `restricted`), `author_credit` (seulement
+si la personne accepte d'être nommée), `language` (code ISO 639-3 du document, `fra` par défaut).
+
+Le niveau d'accès est décidé **avec les personnes et communautés concernées** avant l'import.
+
 ## Contribution directe par l'API
 
 ```bash

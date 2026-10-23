@@ -29,5 +29,13 @@ def test_no_capability_claimed_before_evaluation() -> None:
     response = TestClient(create_app()).get("/api/v1/capabilities")
     assert response.status_code == 200
     statuses = {c["name"]: c["status"] for c in response.json()}
-    assert statuses.pop("dictionary") == "experimental"
-    assert set(statuses.values()) == {"not_available"}  # aucune ne se dit « évaluée »
+    # Sans clé de modèle : seules les fonctions sans IA sont actives, et aucune ne se dit évaluée.
+    assert statuses == {
+        "chat": "not_available",
+        "dictionary": "experimental",
+        "translation": "not_available",
+        "knowledge": "experimental",
+        "knowledge_qa": "not_available",
+        "asr": "not_available",
+        "tts": "not_available",
+    }

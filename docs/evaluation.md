@@ -30,6 +30,7 @@ et publiée.
 | Module | Méthode | Où |
 |---|---|---|
 | Assistant | 50 questions de référence, ≥ 2 évaluateurs, barème sens/langue/orthographe/inventions/incertitude/refus | [evaluation/chat/](../evaluation/chat/README.md) |
-| Traduction | Phase 5 : chrF++ sur jeu de test indépendant + jugement humain (fidélité, grammaire, naturel, omissions, ajouts) | à venir |
+| Traduction | chrF++ par direction sur références de locuteurs, avec et sans dictionnaire, + notation humaine (fidélité, grammaire, naturel, orthographe, omissions, ajouts, hallucinations) | [evaluation/translation/](../evaluation/translation/README.md) |
+| Recherche documentaire | Rappel@k et MRR sur questions de référence (sans modèle) ; réponses vérifiées contre les passages cités | [evaluation/knowledge/](../evaluation/knowledge/README.md) |
 | Voix | Phase 6 : WER/CER avec normalisation documentée, locuteurs et conditions séparés ; TTS jugée par des locuteurs | à venir |
 | Dictionnaire, tifinagh | Phase 4 : correspondances entre écritures, collisions, recherche normalisée | à venir |

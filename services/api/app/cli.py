@@ -26,6 +26,7 @@ from app.models import (
     ApiToken,
     CorpusText,
     DatasetPurpose,
+    KnowledgeDocument,
     LexicalEntry,
     OrthographyConvention,
     Role,
@@ -35,13 +36,15 @@ from app.models import (
     Status,
     User,
 )
-from app.schemas import CorpusTextIn, LexicalEntryIn
-from app.services import corpus, datasets, lexicon
+from app.schemas import CorpusTextIn, KnowledgeDocumentIn, LexicalEntryIn
+from app.services import corpus, datasets, knowledge, lexicon
 
-MODELS: dict[str, type[LexicalEntry] | type[CorpusText]] = {
+MODELS: dict[str, type[LexicalEntry] | type[CorpusText] | type[KnowledgeDocument]] = {
     "lexicon": LexicalEntry,
     "corpus": CorpusText,
+    "knowledge": KnowledgeDocument,
 }
+EXPORTABLE = ("lexicon", "corpus")
 
 
 def fail(message: str) -> NoReturn:
@@ -130,11 +133,16 @@ def import_file(session: Session, a: argparse.Namespace) -> None:
         for entry in entries:
             lexicon.create_entry(session, entry, source, actor, Status.RAW)
         count = len(entries)
-    else:
+    elif a.kind == "corpus":
         texts = read_jsonl(Path(a.file), CorpusTextIn)
         for text in texts:
             corpus.create_text(session, text, source, actor, Status.RAW)
         count = len(texts)
+    else:
+        documents = read_jsonl(Path(a.file), KnowledgeDocumentIn)
+        for document in documents:
+            knowledge.create_document(session, document, source, actor, Status.RAW)
+        count = len(documents)
     print(f"{count} élément(s) importé(s) au statut « brut », à faire valider.")
 
 
@@ -172,9 +180,13 @@ def _withdraw_all(session: Session, items: list[Content], actor: User, reason: s
 
 def withdraw_one(session: Session, a: argparse.Namespace) -> None:
     key = uuid.UUID(a.id)
-    item: Content | None = (
-        session.get(LexicalEntry, key) if a.kind == "lexicon" else session.get(CorpusText, key)
-    )
+    item: Content | None
+    if a.kind == "lexicon":
+        item = session.get(LexicalEntry, key)
+    elif a.kind == "corpus":
+        item = session.get(CorpusText, key)
+    else:
+        item = session.get(KnowledgeDocument, key)
     if item is None:
         fail("contenu introuvable")
     _withdraw_all(session, [item], user_by_email(session, a.actor), a.reason)
@@ -241,7 +253,7 @@ def parser() -> argparse.ArgumentParser:
     c.add_argument("--actor", help="e-mail de la personne qui importe")
 
     c = command("export", export, "produire un export figé et traçable")
-    c.add_argument("kind", choices=list(MODELS))
+    c.add_argument("kind", choices=EXPORTABLE)
     c.add_argument("--purpose", choices=[d.value for d in DatasetPurpose], required=True)
     c.add_argument("--name", required=True)
     c.add_argument("--out", required=True)

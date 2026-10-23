@@ -46,7 +46,7 @@ export const MODULES: Module[] = [
       fr: "Bibliothèque de savoirs touaregs, avec provenance, droits et niveaux d'accès.",
       en: "Library of Tuareg knowledge, with provenance, rights and access levels.",
     },
-    capabilities: ["knowledge"],
+    capabilities: ["knowledge", "knowledge_qa"],
   },
   {
     href: "/voice",

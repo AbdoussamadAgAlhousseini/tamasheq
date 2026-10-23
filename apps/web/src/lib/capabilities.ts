@@ -1,6 +1,13 @@
 // Contrat de GET /api/v1/capabilities (services/api/app/routers/capabilities.py).
 
-export type CapabilityName = "chat" | "translation" | "dictionary" | "knowledge" | "asr" | "tts";
+export type CapabilityName =
+  | "chat"
+  | "translation"
+  | "dictionary"
+  | "knowledge"
+  | "knowledge_qa"
+  | "asr"
+  | "tts";
 export type CapabilityStatus = "not_available" | "experimental" | "evaluated";
 
 export type Capability = { name: CapabilityName; status: CapabilityStatus; note: string };

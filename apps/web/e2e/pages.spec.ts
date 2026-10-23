@@ -13,7 +13,15 @@ const ROUTES = [
   "/about",
 ];
 
-const CAPABILITIES = ["chat", "translation", "dictionary", "knowledge", "asr", "tts"].map(
+const CAPABILITIES = [
+  "chat",
+  "translation",
+  "dictionary",
+  "knowledge",
+  "knowledge_qa",
+  "asr",
+  "tts",
+].map(
   (name) => ({ name, status: "not_available", note: "" }),
 );
 
@@ -22,6 +30,7 @@ async function mockApi(page: Page, body: unknown = CAPABILITIES, status = 200) {
     route.fulfill({ status, contentType: "application/json", body: JSON.stringify(body) }),
   );
   await page.route("**/api/v1/dictionary?*", (route) => route.fulfill({ json: { items: [] } }));
+  await page.route("**/api/v1/knowledge?*", (route) => route.fulfill({ json: [] }));
 }
 
 for (const route of ROUTES) {

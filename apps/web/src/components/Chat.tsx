@@ -3,50 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 
 import { type CapabilityStatus, fetchCapabilities } from "@/lib/capabilities";
-import {
-  ChatError,
-  type ChatErrorCode,
-  type ChatTurn,
-  MAX_CHARS,
-  MAX_MESSAGES,
-  sendChat,
-} from "@/lib/chat";
+import { API_ERRORS as ERRORS, ApiError, type ApiErrorCode } from "@/lib/api";
+import { type ChatTurn, MAX_CHARS, MAX_MESSAGES, sendChat } from "@/lib/chat";
 
 import { T } from "./T";
 
 type Shown = ChatTurn & { model?: string; truncated?: boolean };
-
-const ERRORS: Record<ChatErrorCode, { fr: string; en: string }> = {
-  not_configured: {
-    fr: "L'assistant n'est pas activé sur ce serveur.",
-    en: "The assistant is not enabled on this server.",
-  },
-  rate_limited: {
-    fr: "Trop de messages en peu de temps. Réessayez dans une minute.",
-    en: "Too many messages in a short time. Try again in a minute.",
-  },
-  refused: {
-    fr: "Le modèle a refusé de répondre à ce message.",
-    en: "The model declined to answer this message.",
-  },
-  unavailable: {
-    fr: "Le service de modèle est indisponible pour le moment. Réessayez plus tard.",
-    en: "The model service is unavailable right now. Try again later.",
-  },
-  provider_error: {
-    fr: "Erreur du fournisseur de modèle. L'équipe doit vérifier la configuration.",
-    en: "Model provider error. The team needs to check the configuration.",
-  },
-  invalid: { fr: "Message refusé par le serveur.", en: "Message rejected by the server." },
-  network: { fr: "Serveur injoignable.", en: "Server unreachable." },
-};
 
 export function Chat() {
   const [status, setStatus] = useState<CapabilityStatus | "loading" | "error">("loading");
   const [turns, setTurns] = useState<Shown[]>([]);
   const [draft, setDraft] = useState("");
   const [pending, setPending] = useState(false);
-  const [error, setError] = useState<ChatErrorCode | null>(null);
+  const [error, setError] = useState<ApiErrorCode | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -66,7 +35,10 @@ export function Chat() {
         {status === "error" ? (
           <T fr={ERRORS.network.fr} en={ERRORS.network.en} />
         ) : (
-          <T fr={ERRORS.not_configured.fr} en={ERRORS.not_configured.en} />
+          <T
+            fr="L'assistant n'est pas activé sur ce serveur."
+            en="The assistant is not enabled on this server."
+          />
         )}
       </p>
     );
@@ -98,7 +70,7 @@ export function Chat() {
       // Le message non envoyé revient dans le champ ; l'historique reste cohérent.
       setTurns(turns);
       setDraft(content);
-      setError(e instanceof ChatError ? e.code : "invalid");
+      setError(e instanceof ApiError ? e.code : "invalid");
     } finally {
       setPending(false);
     }

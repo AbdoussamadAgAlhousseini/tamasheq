@@ -24,4 +24,10 @@ Mis à jour le 2026-10-23.
 - Le dictionnaire ne contient encore aucune donnée ; prononciation et audio arrivent en phase 6.
 - Les conventions orthographiques sont enregistrables mais aucune conversion latin ↔ tifinagh
   n'est faite (volontairement : elle doit être définie et validée par des locuteurs).
-- Traduction, savoirs et voix : non développés.
+- Traduction : modèle généraliste guidé par le dictionnaire, **non évalué** ; tamasheq produit
+  en écriture latine seulement ; pas encore de comparaison avec NLLB-200.
+- Recherche documentaire lexicale : un mot écrit autrement que dans le document (variante
+  orthographique, synonyme) n'est pas retrouvé ; pas de liste de mots-outils tamasheq.
+- La bibliothèque ne contient encore aucun document.
+- Corrections de traductions : par l'API avec un jeton, pas encore depuis le site.
+- Voix : non développée.
