@@ -2,9 +2,13 @@ import os
 from collections.abc import Iterator
 
 import pytest
+from sqlalchemy import text
+from sqlalchemy.orm import Session
 
+from app.auth import issue_token
 from app.config import get_settings
 from app.db import get_engine
+from app.models import Role, User
 from app.routers.chat import get_chat_provider, get_limiter
 
 
@@ -29,3 +33,37 @@ def _reset_caches() -> Iterator[None]:
     if get_engine.cache_info().currsize:
         get_engine().dispose()
         get_engine.cache_clear()
+
+
+@pytest.fixture(scope="session")
+def migrated(database_available: bool) -> None:
+    if not database_available:
+        pytest.skip("TEST_DATABASE=1 requis")
+    from alembic import command
+    from alembic.config import Config
+
+    command.upgrade(Config("alembic.ini"), "head")
+
+
+CONTENT_TABLES = (
+    "dataset_items, datasets, revisions, lexical_examples, lexical_senses, lexical_spellings, "
+    "lexical_entries, corpus_texts, orthography_conventions, sources, api_tokens, users"
+)
+
+
+@pytest.fixture
+def db(migrated: None) -> Iterator[Session]:
+    """Base vide pour chaque test (TRUNCATE ne déclenche pas les triggers de ligne)."""
+    with get_engine().begin() as connection:
+        connection.execute(text(f"TRUNCATE {CONTENT_TABLES} RESTART IDENTITY CASCADE"))
+    with Session(get_engine(), expire_on_commit=False) as session:
+        yield session
+
+
+def make_user(session: Session, role: Role, name: str) -> tuple[User, str]:
+    user = User(email=f"{name}@test.invalid", pseudonym=name, role=role)
+    session.add(user)
+    session.flush()
+    token = issue_token(session, user)
+    session.commit()
+    return user, token

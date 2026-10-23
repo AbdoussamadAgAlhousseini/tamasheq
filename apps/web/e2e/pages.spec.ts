@@ -21,6 +21,7 @@ async function mockApi(page: Page, body: unknown = CAPABILITIES, status = 200) {
   await page.route("**/api/v1/capabilities", (route) =>
     route.fulfill({ status, contentType: "application/json", body: JSON.stringify(body) }),
   );
+  await page.route("**/api/v1/dictionary?*", (route) => route.fulfill({ json: { items: [] } }));
 }
 
 for (const route of ROUTES) {

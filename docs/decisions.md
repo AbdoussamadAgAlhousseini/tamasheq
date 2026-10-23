@@ -16,6 +16,7 @@ ajoute alors une nouvelle entrée plutôt que d'effacer l'ancienne.
 | D9 | 2026-10-23 | Le code sera **open source**. | Porteur du projet | Licence du code choisie en D10. Une licence open source autorise par définition l'usage commercial **du code** ; le caractère non commercial s'applique aux données et aux modèles, qui ont leurs propres licences. |
 | D10 | 2026-10-23 | Licence du code : **GNU AGPL-3.0**. | Porteur du projet | Fichier `LICENSE` ajouté. Ne couvre que le code : les données, contributions et modèles gardent leurs propres licences. |
 | D11 | 2026-10-23 | Assistant (phase 3) : `claude-opus-5-5`, effort `medium`, repli serveur `fallbacks: "default"`, aucune conversation stockée. | Proposé, à valider | Modèle et effort modifiables par variables d'environnement ; tout changement impose une nouvelle passe d'évaluation. |
+| D12 | 2026-10-23 | Modèle de données (phase 4) : cinq statuts, deux autorisations distinctes, quatre yeux, licence inconnue = pas d'entraînement, restrictions exclues des exports automatiques, contenus retirés conservés et marqués. | Proposé, à valider | Détail dans `data-governance.md`. |
 
 ## Options étudiées pour la licence du code (tranché par D10)
 

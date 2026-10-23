@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { DictionarySearch } from "@/components/DictionarySearch";
 import { ModulePage } from "@/components/ModulePage";
 import { T } from "@/components/T";
 import { getModule } from "@/lib/modules";
@@ -54,6 +55,8 @@ export default function Page() {
           </li>
         </ul>
       }
-    />
+    >
+      <DictionarySearch />
+    </ModulePage>
   );
 }

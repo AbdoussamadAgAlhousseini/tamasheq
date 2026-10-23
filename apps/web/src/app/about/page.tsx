@@ -72,8 +72,8 @@ export default function Page() {
         <div className="prose-block mt-3">
           <p>
             <T
-              fr="Le tamasheq s'écrit en alphabet latin et en tifinagh. Le sélecteur « Écriture tamasheq » de l'en-tête enregistre votre préférence ; il s'appliquera aux contenus tamasheq dès que des contenus validés seront publiés."
-              en="Tamasheq is written in Latin script and in Tifinagh. The “Tamasheq script” selector in the header saves your preference; it will apply to Tamasheq content once validated content is published."
+              fr="Le tamasheq s'écrit en alphabet latin et en tifinagh. Le sélecteur « Écriture tamasheq » de l'en-tête enregistre votre préférence ; il choisit la forme affichée quand un mot existe dans les deux écritures, par exemple dans le dictionnaire."
+              en="Tamasheq is written in Latin script and in Tifinagh. The “Tamasheq script” selector in the header saves your preference; it chooses which form is shown when a word exists in both scripts, for example in the dictionary."
             />
           </p>
           <p>

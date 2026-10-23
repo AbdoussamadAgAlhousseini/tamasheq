@@ -50,6 +50,12 @@ body {
   font-family: var(--font-sans);
 }
 
+/* Écriture tamasheq préférée : voir components/TaqText.tsx. */
+html[data-script="latn"] [data-taq-alt="tfng"],
+html[data-script="tfng"] [data-taq-alt="latn"] {
+  display: none;
+}
+
 /* Langue d'interface : voir components/T.tsx. */
 html[data-lang="fr"] [data-ui-lang="en"],
 html[data-lang="en"] [data-ui-lang="fr"] {

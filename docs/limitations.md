@@ -19,5 +19,9 @@ Mis à jour le 2026-10-23.
   conditions du fournisseur.
 - Les conversations ne sont pas conservées : recharger la page les efface.
 - Limitation de débit en mémoire, valable pour une seule instance.
-- Pas d'authentification ni d'administration fonctionnelle.
-- Traduction, dictionnaire, savoirs et voix : non développés.
+- Pas de connexion depuis l'interface web : contributions et relecture passent par l'API avec
+  un jeton, ou par la ligne de commande.
+- Le dictionnaire ne contient encore aucune donnée ; prononciation et audio arrivent en phase 6.
+- Les conventions orthographiques sont enregistrables mais aucune conversion latin ↔ tifinagh
+  n'est faite (volontairement : elle doit être définie et validée par des locuteurs).
+- Traduction, savoirs et voix : non développés.

@@ -1,6 +1,6 @@
 # Sécurité
 
-État au 2026-10-23 (phase 3). À compléter à chaque phase ; audit complet prévu en phase 8.
+État au 2026-10-23 (phase 4). À compléter à chaque phase ; audit complet prévu en phase 8.
 
 ## Secrets
 
@@ -26,8 +26,16 @@
 - Les messages sont transmis au fournisseur du modèle (Anthropic) ; l'interface demande de ne
   pas y écrire d'informations personnelles ni de savoirs restreints.
 
+## Authentification
+
+- Jetons porteurs aléatoires (256 bits), créés en ligne de commande, montrés une seule fois ;
+  seule leur empreinte SHA-256 est stockée. Révocation : `app.cli revoke-tokens`.
+- Pas de mot de passe stocké. Une connexion depuis l'interface web reste à concevoir.
+- Rôles vérifiés à chaque requête ; contrôle à quatre yeux pour la validation.
+
 ## API
 
-- CORS limité aux origines de `CORS_ORIGINS`, en-tête `Content-Type` uniquement.
-- Validation de toutes les entrées par Pydantic.
-- Pas encore d'authentification : aucune route d'écriture de données n'existe.
+- CORS limité aux origines de `CORS_ORIGINS`, en-têtes `Content-Type` et `Authorization`.
+- Validation stricte des entrées par Pydantic (champs inconnus refusés, tailles bornées).
+- Recherche : caractères spéciaux de `LIKE` neutralisés ; requêtes SQL paramétrées.
+- Vue publique du dictionnaire : aucune donnée sur le contributeur ni sur le consentement.

@@ -3,6 +3,12 @@
 ## [Non publié]
 
 ### Ajouté
+- Phase 4 : dictionnaire et corpus. Migration `0002` (sources, entrées, graphies, sens,
+  exemples, textes, conventions, révisions, exports, jetons), garanties en base (forme
+  d'origine immuable, journal append-only), jetons d'accès et rôles, contrôle à quatre yeux,
+  API du dictionnaire, outil `app.cli` (comptes, sources, import tout-ou-rien, exports
+  traçables, retraits), page `/dictionary` avec recherche et préférence d'écriture. Documents
+  `data-governance.md` et `data-collection.md`.
 - Phase 3 : assistant expérimental. `POST /api/v1/chat`, interface `ChatProvider` et adaptateur
   Anthropic (`claude-opus-5-5`, repli serveur), consignes de prudence, limites de taille et de
   débit, page `/chat` interactive quand l'assistant est configuré, réponses marquées « non

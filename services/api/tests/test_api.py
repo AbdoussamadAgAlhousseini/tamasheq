@@ -28,4 +28,6 @@ def test_health_reports_unavailable_database() -> None:
 def test_no_capability_claimed_before_evaluation() -> None:
     response = TestClient(create_app()).get("/api/v1/capabilities")
     assert response.status_code == 200
-    assert {c["status"] for c in response.json()} == {"not_available"}
+    statuses = {c["name"]: c["status"] for c in response.json()}
+    assert statuses.pop("dictionary") == "experimental"
+    assert set(statuses.values()) == {"not_available"}  # aucune ne se dit « évaluée »

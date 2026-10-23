@@ -19,7 +19,7 @@ class Capability(BaseModel):
 
 # Source de vérité de ce que l'application affirme savoir faire. Un statut ne passe à
 # « evaluated » qu'avec des résultats publiés dans evaluation/ (voir docs/evaluation.md).
-NOT_YET = ("translation", "dictionary", "knowledge", "asr", "tts")
+NOT_YET = ("translation", "knowledge", "asr", "tts")
 
 
 @router.get("/capabilities")
@@ -31,7 +31,13 @@ def capabilities(
         if chat_provider is not None
         else Capability(name="chat", status="not_available", note="Assistant non configuré.")
     )
-    return [chat] + [
+    # Le dictionnaire fonctionne ; son contenu n'est affiché qu'après validation par un réviseur.
+    dictionary = Capability(
+        name="dictionary",
+        status="experimental",
+        note="Fonction active ; seules les entrées validées par un réviseur sont publiées.",
+    )
+    return [chat, dictionary] + [
         Capability(name=name, status="not_available", note="Pas encore développé.")
         for name in NOT_YET
     ]

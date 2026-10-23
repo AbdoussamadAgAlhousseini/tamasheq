@@ -69,6 +69,7 @@ def test_capability_experimental_when_configured(app: FastAPI) -> None:
     client = use(app, FakeProvider())
     statuses = {c["name"]: c["status"] for c in client.get("/api/v1/capabilities").json()}
     assert statuses.pop("chat") == "experimental"
+    assert statuses.pop("dictionary") == "experimental"
     assert set(statuses.values()) == {"not_available"}
 
 

@@ -51,6 +51,11 @@ Choix techniques :
 | `GET /health` | État de l'API et de la base (503 si la base est indisponible) |
 | `GET /api/v1/capabilities` | Liste des fonctions et de leur statut (`not_available`, `experimental`, `evaluated`). Toutes sont `not_available` en phase 1. |
 | `POST /api/v1/chat` | Assistant expérimental : reçoit l'historique de la session, renvoie la réponse, le modèle utilisé, `status: "experimental"` et `verified: false` |
+| `GET /api/v1/dictionary?q=&include_pending=` | Recherche publique (entrées validées et publiables ; en attente seulement sur demande) |
+| `GET /api/v1/dictionary/{id}` | Entrée publique |
+| `POST /api/v1/dictionary` | Contribution (jeton requis), statut « en attente » |
+| `POST /api/v1/dictionary/{id}/validate` · `/restrict` · `/withdraw` | Cycle de vie (réviseur, ou contributeur pour le retrait) |
+| `GET /api/v1/dictionary/{id}/history` · `GET /api/v1/review/dictionary` | Historique et file de relecture (réviseur) |
 | `GET /docs` | Documentation OpenAPI générée |
 
 ## Couche IA
@@ -71,10 +76,13 @@ disponible : l'interface ne doit pas annoncer une fonction que l'API déclare in
 
 ## Base de données
 
-Migration `0001` : table `users` (pseudonyme public, e-mail privé, rôle `contributor` /
-`reviewer` / `admin`). Aucune donnée d'authentification n'est stockée tant que la méthode
-d'authentification n'est pas choisie. Les schémas du corpus, du dictionnaire, du consentement
-et des licences arrivent en phase 4.
+| Migration | Tables |
+|---|---|
+| `0001` | `users` (pseudonyme public, e-mail privé, rôle) |
+| `0002` | `api_tokens` (empreintes de jetons), `sources` (provenance et droits), `orthography_conventions`, `lexical_entries` / `lexical_spellings` / `lexical_senses` / `lexical_examples`, `corpus_texts`, `revisions` (journal append-only), `datasets` / `dataset_items` (exports traçables) |
+
+Règles de gouvernance : [data-governance.md](data-governance.md). Formats d'import :
+[data-collection.md](data-collection.md). Outils d'administration : `uv run python -m app.cli --help`.
 
 ## Lancement local
 
