@@ -3,6 +3,7 @@ name = "tamasheq-api"
 version = "0.1.0"
 description = "API du projet TAMASHEQ"
 requires-python = ">=3.13"
+license = "AGPL-3.0-only"
 dependencies = [
     "alembic>=1.20.1",
     "fastapi>=0.162.0",

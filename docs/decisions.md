@@ -13,9 +13,10 @@ ajoute alors une nouvelle entrée plutôt que d'effacer l'ancienne.
 | D6 | 2026-10-23 | L'envoi de **textes publics** à une API d'IA externe est accepté. | Porteur du projet | Les contenus restreints ne sont jamais envoyés à une API externe. Fournisseur initial proposé pour la phase 3 : Claude (Anthropic), derrière un adaptateur remplaçable ; à comparer à d'autres fournisseurs sur le jeu de test. |
 | D7 | 2026-10-23 | Hébergement : **choix délégué**, voir la recommandation dans `docs/deployment.md`. | Délégué | Recommandation : services managés en région Europe ; à confirmer avant la phase 8. |
 | D8 | 2026-10-23 | Prise de contact avec le LIA, Fondation Hirondelle ou Masakhane : **pas nécessaire pour l'instant**. | Porteur du projet | Le corpus IWSLT2022 reste limité à l'évaluation non commerciale avec citation. |
-| D9 | 2026-10-23 | Le code sera **open source**. | Porteur du projet | Licence du code **à choisir** (voir ci-dessous). Une licence open source autorise par définition l'usage commercial **du code** ; le caractère non commercial s'applique aux données et aux modèles, qui ont leurs propres licences. |
+| D9 | 2026-10-23 | Le code sera **open source**. | Porteur du projet | Licence du code choisie en D10. Une licence open source autorise par définition l'usage commercial **du code** ; le caractère non commercial s'applique aux données et aux modèles, qui ont leurs propres licences. |
+| D10 | 2026-10-23 | Licence du code : **GNU AGPL-3.0**. | Porteur du projet | Fichier `LICENSE` ajouté. Ne couvre que le code : les données, contributions et modèles gardent leurs propres licences. |
 
-## Question ouverte : licence du code
+## Options étudiées pour la licence du code (tranché par D10)
 
 | Option | Effet |
 |---|---|
@@ -23,4 +24,3 @@ ajoute alors une nouvelle entrée plutôt que d'effacer l'ancienne.
 | Apache-2.0 | Très permissive, avec clause de brevets ; permet des dérivés fermés. |
 | MIT | La plus simple et la plus permissive. |
 
-Le fichier `LICENSE` ne sera ajouté qu'après votre choix.

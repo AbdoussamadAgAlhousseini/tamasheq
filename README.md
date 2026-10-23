@@ -35,5 +35,6 @@ Détails, tests et contrôles : [docs/architecture.md](docs/architecture.md).
 
 ## Licence
 
-Code open source : licence à choisir (voir [décisions](docs/decisions.md#question-ouverte--licence-du-code)).
-Les données et modèles tiers gardent leurs propres licences.
+Code sous licence [GNU AGPL-3.0](LICENSE) (décision D10). Les données et modèles tiers
+gardent leurs propres licences ; les contributions linguistiques ont leur propre régime de
+droits, défini contribution par contribution.
