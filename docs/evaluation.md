@@ -32,5 +32,5 @@ et publiée.
 | Assistant | 50 questions de référence, ≥ 2 évaluateurs, barème sens/langue/orthographe/inventions/incertitude/refus | [evaluation/chat/](../evaluation/chat/README.md) |
 | Traduction | chrF++ par direction sur références de locuteurs, avec et sans dictionnaire, + notation humaine (fidélité, grammaire, naturel, orthographe, omissions, ajouts, hallucinations) | [evaluation/translation/](../evaluation/translation/README.md) |
 | Recherche documentaire | Rappel@k et MRR sur questions de référence (sans modèle) ; réponses vérifiées contre les passages cités | [evaluation/knowledge/](../evaluation/knowledge/README.md) |
-| Voix | Phase 6 : WER/CER avec normalisation documentée, locuteurs et conditions séparés ; TTS jugée par des locuteurs | à venir |
+| Voix | WER/CER (normalisation documentée, par locuteur et condition) à partir des sorties de n'importe quel modèle ; TTS : intelligibilité et naturel jugés par des locuteurs. **Aucun modèle encore exécuté.** | [evaluation/voice/](../evaluation/voice/README.md) |
 | Dictionnaire, tifinagh | Phase 4 : correspondances entre écritures, collisions, recherche normalisée | à venir |

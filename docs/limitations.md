@@ -30,4 +30,8 @@ Mis à jour le 2026-10-23.
   orthographique, synonyme) n'est pas retrouvé ; pas de liste de mots-outils tamasheq.
 - La bibliothèque ne contient encore aucun document.
 - Corrections de traductions : par l'API avec un jeton, pas encore depuis le site.
-- Voix : non développée.
+- Voix : collecte d'enregistrements seulement ; **aucune reconnaissance ni synthèse vocale**
+  (modèles non téléchargeables dans l'environnement de développement, aucun évalué).
+- Enregistrement testé avec Chromium ; Firefox et Safari produisent d'autres formats (Ogg,
+  MP4), acceptés mais pas encore testés.
+- Stockage audio local : un stockage objet (S3) sera nécessaire pour plusieurs serveurs.

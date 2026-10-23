@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { ModulePage } from "@/components/ModulePage";
+import { VoiceRecorder } from "@/components/VoiceRecorder";
 import { T } from "@/components/T";
 import { getModule } from "@/lib/modules";
 
@@ -30,8 +31,8 @@ export default function Page() {
         <ul>
           <li>
             <T
-              fr="Whisper ne prend pas en charge le tamasheq. Les autres modèles candidats doivent être mesurés sur des enregistrements représentatifs."
-              en="Whisper does not support Tamasheq. Other candidate models must be measured on representative recordings."
+              fr="Aucune reconnaissance ni synthèse vocale n'est encore proposée. Whisper ne prend pas en charge le tamasheq ; les autres modèles candidats (MMS, wav2vec 2.0) seront mesurés sur les enregistrements collectés ici, auprès de locuteurs distincts de ceux de l'entraînement."
+              en="No speech recognition or synthesis is offered yet. Whisper does not support Tamasheq; other candidate models (MMS, wav2vec 2.0) will be measured on the recordings collected here, with speakers distinct from those used in training."
             />
           </li>
           <li>
@@ -48,6 +49,8 @@ export default function Page() {
           </li>
         </ul>
       }
-    />
+    >
+      <VoiceRecorder />
+    </ModulePage>
   );
 }

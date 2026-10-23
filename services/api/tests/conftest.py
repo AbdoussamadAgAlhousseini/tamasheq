@@ -12,6 +12,7 @@ from app.models import Role, User
 from app.routers.chat import get_backend, get_chat_provider, get_limiter
 from app.routers.knowledge import get_answer_provider
 from app.routers.translate import get_translation_provider
+from app.routers.voice import get_storage
 
 
 @pytest.fixture(scope="session")
@@ -36,6 +37,7 @@ def _reset_caches() -> Iterator[None]:
         get_translation_provider,
         get_answer_provider,
         get_limiter,
+        get_storage,
     ):
         cached.cache_clear()
     yield
@@ -56,7 +58,7 @@ def migrated(database_available: bool) -> None:
 
 CONTENT_TABLES = (
     "dataset_items, datasets, revisions, lexical_examples, lexical_senses, lexical_spellings, "
-    "lexical_entries, corpus_texts, knowledge_chunks, knowledge_documents, "
+    "audio_recordings, lexical_entries, corpus_texts, knowledge_chunks, knowledge_documents, "
     "orthography_conventions, sources, api_tokens, users"
 )
 

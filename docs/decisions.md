@@ -18,6 +18,7 @@ ajoute alors une nouvelle entrée plutôt que d'effacer l'ancienne.
 | D11 | 2026-10-23 | Assistant (phase 3) : `claude-opus-5-5`, effort `medium`, repli serveur `fallbacks: "default"`, aucune conversation stockée. | Proposé, à valider | Modèle et effort modifiables par variables d'environnement ; tout changement impose une nouvelle passe d'évaluation. |
 | D12 | 2026-10-23 | Modèle de données (phase 4) : cinq statuts, deux autorisations distinctes, quatre yeux, licence inconnue = pas d'entraînement, restrictions exclues des exports automatiques, contenus retirés conservés et marqués. | Proposé, à valider | Détail dans `data-governance.md`. |
 | D13 | 2026-10-23 | Phase 5 : traduction par modèle généraliste guidé par le dictionnaire validé ; recherche documentaire lexicale PostgreSQL (pas de pgvector sans preuve d'utilité) ; seuls les contenus publics sont transmis au modèle ; aucun appel au modèle sans document pertinent. | Proposé, à valider | Détails dans `architecture.md` et `security.md`. |
+| D14 | 2026-10-23 | Phase 6 : collecte vocale consentie (trois accords distincts, retrait = suppression du fichier), connexion au site par jeton, évaluation ASR indépendante du modèle ; aucun modèle vocal intégré tant qu'il n'a pas été exécuté et évalué. | Proposé, à valider | Voir `evaluation/voice/README.md`. |
 
 ## Options étudiées pour la licence du code (tranché par D10)
 

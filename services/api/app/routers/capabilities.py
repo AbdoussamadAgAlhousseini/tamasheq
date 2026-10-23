@@ -55,7 +55,9 @@ def capabilities(
         if ai
         else "Réponses non configurées.",
     )
+    # Collecte d'enregistrements active, mais aucun modèle de reconnaissance ou de synthèse
+    # vocale n'est ni intégré ni évalué pour le tamasheq.
     return [chat, dictionary, translation, knowledge, knowledge_qa] + [
-        Capability(name=name, status="not_available", note="Pas encore développé.")
+        Capability(name=name, status="not_available", note="Aucun modèle évalué pour le tamasheq.")
         for name in NOT_YET
     ]

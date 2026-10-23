@@ -3,16 +3,18 @@
 Infrastructure linguistique et d'intelligence artificielle pour la langue tamasheq du Mali
 (`taq`) et les savoirs touaregs, gouvernée avec les communautés. Projet non commercial.
 
-> **Statut : phase 5 (traduction et savoirs).** Assistant, traduction et réponses citées
-> expérimentaux (activés si une clé `ANTHROPIC_API_KEY` est fournie, **non évalués**) ;
-> dictionnaire et bibliothèque des savoirs avec provenance, droits, niveaux d'accès,
-> validation et retrait. **Aucune donnée tamasheq ni aucun document n'est encore chargé.** **Aucune fonctionnalité linguistique n'est disponible ni évaluée**, et aucune
-> donnée tamasheq n'est présente dans ce dépôt.
+> **Statut : phase 6 terminée (collecte vocale).**
+> - Expérimental et **non évalué** : assistant, traduction, réponses citées (actifs seulement
+>   si une clé `ANTHROPIC_API_KEY` est fournie).
+> - Fonctionnels : dictionnaire, corpus, bibliothèque des savoirs (provenance, droits,
+>   niveaux d'accès, validation, retrait) et collecte d'enregistrements consentie.
+> - Absents : reconnaissance et synthèse vocales (aucun modèle évalué).
+> - **Aucune donnée tamasheq, aucun document ni aucun enregistrement n'est encore chargé.**
 
 ## Démarrage rapide
 
 ```bash
-docker compose -f infra/docker-compose.yml up -d     # PostgreSQL 16
+docker compose -f infra/docker-compose.yml up -d     # PostgreSQL 16 (FFmpeg requis pour l'audio)
 cd services/api && cp ../../.env.example .env && uv sync && uv run alembic upgrade head
 uv run uvicorn app.main:app --reload                 # http://localhost:8000/docs
 cd ../../apps/web && npm install && npm run dev      # http://localhost:3000

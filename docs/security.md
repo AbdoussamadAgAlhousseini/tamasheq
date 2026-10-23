@@ -1,6 +1,6 @@
 # Sécurité
 
-État au 2026-10-23 (phase 5). À compléter à chaque phase ; audit complet prévu en phase 8.
+État au 2026-10-23 (phase 6). À compléter à chaque phase ; audit complet prévu en phase 8.
 
 ## Secrets
 
@@ -37,11 +37,26 @@
   revérifiées côté serveur.
 - La session de base de données est fermée avant l'appel au modèle.
 
+## Fichiers audio
+
+- Taille limitée à 10 Mo, lue par morceaux (refus dès le dépassement) ; durée 0,5 à 60 s.
+- Le type annoncé par le navigateur est ignoré : ffprobe doit décoder **une seule piste
+  audio**, sans vidéo, dans un format accepté (WebM, Ogg, WAV, MP3, MP4/M4A, FLAC). ffprobe est
+  appelé par chemin absolu, sans shell, avec un délai maximal.
+- Fichiers nommés par identifiant aléatoire, jamais par le nom fourni ; le stockage refuse
+  toute clé sortant de son répertoire.
+- Écoute : publique seulement si l'enregistrement est validé et sa publication autorisée.
+- Retrait : le fichier est effacé du stockage ; l'empreinte SHA-256 reste dans le journal.
+
 ## Authentification
 
 - Jetons porteurs aléatoires (256 bits), créés en ligne de commande, montrés une seule fois ;
   seule leur empreinte SHA-256 est stockée. Révocation : `app.cli revoke-tokens`.
-- Pas de mot de passe stocké. Une connexion depuis l'interface web reste à concevoir.
+- Pas de mot de passe stocké. Depuis le site, la personne colle son jeton ; il est gardé en
+  `sessionStorage` (effacé à la fermeture de l'onglet) et envoyé uniquement à l'API. Une
+  faille XSS pourrait le lire : React échappe tous les contenus affichés et aucun HTML fourni
+  par les utilisateurs n'est rendu. Une connexion par lien e-mail est à prévoir avant
+  l'ouverture au public.
 - Rôles vérifiés à chaque requête ; contrôle à quatre yeux pour la validation.
 
 ## API

@@ -3,6 +3,12 @@
 ## [Non publié]
 
 ### Ajouté
+- Phase 6 : collecte vocale (migration `0004`) — phrases validées à lire, dépôt
+  d'enregistrements vérifiés par ffprobe (format, piste unique, durée, taille), trois accords
+  distincts (publication, entraînement ASR, synthèse de voix), transcription manuelle,
+  écoute selon les droits, relecture, retrait avec suppression du fichier. Connexion au site
+  par jeton (`GET /api/v1/me`). Enregistreur dans le navigateur (`/voice`). Évaluation
+  WER/CER indépendante du modèle (`app.evaluation.asr_eval`) et protocole vocal.
 - Phase 5 : traduction expérimentale (`POST /api/v1/translate`) appuyée sur les entrées
   validées du dictionnaire, avec ambiguïtés, variantes et entrées utilisées ; corrections par
   les locuteurs versées au corpus. Bibliothèque des savoirs (migration `0003`) : documents à

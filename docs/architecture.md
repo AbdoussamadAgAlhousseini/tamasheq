@@ -61,6 +61,12 @@ Choix techniques :
 | `GET /api/v1/knowledge?q=&theme=` · `GET /api/v1/knowledge/{id}` | Bibliothèque : public pour tous, « membres » avec un compte, jamais restreint |
 | `POST /api/v1/knowledge/ask` | Réponse citée, fondée sur les seuls documents publics et validés |
 | `POST /api/v1/knowledge/{id}/validate` · `/restrict` · `/withdraw` · `GET …/history` | Cycle de vie des documents |
+| `GET /api/v1/me` | Compte associé au jeton (connexion depuis le site) |
+| `GET /api/v1/voice/prompts` | Phrases validées à lire |
+| `POST /api/v1/voice/recordings` | Dépôt d'un enregistrement (multipart : fichier + droits en JSON), vérifié par ffprobe |
+| `GET /api/v1/voice/recordings/{id}/audio` | Écoute : public si validé et publiable, sinon contributeur ou réviseur |
+| `PUT /api/v1/voice/recordings/{id}/transcription` | Transcription de référence (contributeur ou réviseur) |
+| `GET /api/v1/voice/review` · cycle de vie `…/validate` `/restrict` `/withdraw` `/history` | Relecture ; le retrait supprime le fichier |
 | `GET /docs` | Documentation OpenAPI générée |
 
 ## Couche IA
@@ -107,6 +113,7 @@ disponible : l'interface ne doit pas annoncer une fonction que l'API déclare in
 | Migration | Tables |
 |---|---|
 | `0001` | `users` (pseudonyme public, e-mail privé, rôle) |
+| `0004` | `audio_recordings` (fichier, durée, empreinte, phrase lue, transcription, accord de synthèse vocale) |
 | `0003` | `knowledge_documents` (niveau d'accès, thème, crédit), `knowledge_chunks` (passages, index plein texte) |
 | `0002` | `api_tokens` (empreintes de jetons), `sources` (provenance et droits), `orthography_conventions`, `lexical_entries` / `lexical_spellings` / `lexical_senses` / `lexical_examples`, `corpus_texts`, `revisions` (journal append-only), `datasets` / `dataset_items` (exports traçables) |
 
@@ -115,7 +122,8 @@ Règles de gouvernance : [data-governance.md](data-governance.md). Formats d'imp
 
 ## Lancement local
 
-Prérequis : Node 22, Python 3.13, [uv](https://docs.astral.sh/uv/), PostgreSQL 16 (local ou via Docker).
+Prérequis : Node 22, Python 3.13, [uv](https://docs.astral.sh/uv/), PostgreSQL 16 (local ou via
+Docker), FFmpeg (`ffprobe`, pour vérifier les fichiers audio).
 
 ```bash
 # Base de données (avec Docker)

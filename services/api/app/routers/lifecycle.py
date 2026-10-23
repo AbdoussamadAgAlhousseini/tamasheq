@@ -1,6 +1,7 @@
 """Routes de cycle de vie communes aux contenus : validation, restriction, retrait, historique."""
 
 import uuid
+from collections.abc import Callable
 from datetime import datetime
 from typing import Annotated, Any
 
@@ -68,7 +69,14 @@ def refused(e: GovernanceError) -> HTTPException:
     return HTTPException(code, str(e))
 
 
-def add_lifecycle_routes[C: Content](router: APIRouter, path: str, model: type[C]) -> None:
+def add_lifecycle_routes[C: Content](
+    router: APIRouter,
+    path: str,
+    model: type[C],
+    on_withdraw: Callable[[Session, C], None] | None = None,
+) -> None:
+    """`on_withdraw` s'exécute après le retrait, dans la même transaction (ex. suppression
+    d'un fichier audio)."""
     entity = ENTITY[model]
 
     def load(session: Session, item_id: uuid.UUID) -> C:
@@ -108,6 +116,8 @@ def add_lifecycle_routes[C: Content](router: APIRouter, path: str, model: type[C
             datasets = withdraw(session, item, user, body.reason)
         except GovernanceError as e:
             raise refused(e) from e
+        if on_withdraw is not None:
+            on_withdraw(session, item)
         session.commit()
         return Withdrawn(
             id=item.id,

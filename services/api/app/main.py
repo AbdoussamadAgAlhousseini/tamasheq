@@ -4,7 +4,16 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
-from app.routers import capabilities, chat, dictionary, health, knowledge, translate
+from app.routers import (
+    capabilities,
+    chat,
+    dictionary,
+    health,
+    knowledge,
+    me,
+    translate,
+    voice,
+)
 
 
 def create_app() -> FastAPI:
@@ -23,6 +32,8 @@ def create_app() -> FastAPI:
     app.include_router(dictionary.router)
     app.include_router(translate.router)
     app.include_router(knowledge.router)
+    app.include_router(voice.router)
+    app.include_router(me.router)
     return app
 
 

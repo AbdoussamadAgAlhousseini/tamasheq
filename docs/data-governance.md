@@ -63,6 +63,20 @@ Indépendamment du code applicatif, PostgreSQL refuse :
   (`original_text`) ;
 - toute modification ou suppression du journal des révisions.
 
+## Enregistrements vocaux
+
+Trois accords distincts, tous décochés par défaut :
+
+| Accord | Permet |
+|---|---|
+| `allow_publication` | l'écoute publique sur le site |
+| `allow_training` | l'entraînement ou l'évaluation de modèles de reconnaissance de la parole |
+| `allow_voice_synthesis` | la création d'une voix de synthèse à partir de la voix de la personne |
+
+Le retrait **supprime le fichier audio** (une voix est une donnée personnelle) ; seules les
+métadonnées et l'empreinte du fichier restent pour la trace. Une transcription modifiée
+repasse en relecture.
+
 ## Niveaux d'accès des savoirs
 
 | Niveau | Consultable | Transmis à un modèle externe |

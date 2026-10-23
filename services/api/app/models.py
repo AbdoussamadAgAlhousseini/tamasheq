@@ -296,6 +296,32 @@ class KnowledgeChunk(Base):
     document: Mapped[KnowledgeDocument] = relationship(back_populates="chunks")
 
 
+class AudioRecording(Governed, Base):
+    """Enregistrement vocal consenti. Trois autorisations distinctes : publication
+    (`allow_publication`), entraînement de la reconnaissance vocale (`allow_training`) et
+    synthèse d'une voix à partir de celle de la personne (`allow_voice_synthesis`).
+
+    Au retrait, le fichier audio est supprimé ; ces métadonnées restent pour la trace."""
+
+    __tablename__ = "audio_recordings"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    storage_key: Mapped[str | None] = mapped_column(String(255), unique=True)
+    mime_type: Mapped[str] = mapped_column(String(64))
+    size_bytes: Mapped[int] = mapped_column(Integer)
+    duration_seconds: Mapped[float] = mapped_column()
+    sha256: Mapped[str] = mapped_column(String(64))
+    # Phrase lue (collecte de type Common Voice), si l'enregistrement en lit une.
+    prompt_text_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("corpus_texts.id"))
+    # Transcription de référence, saisie ou corrigée par une personne.
+    transcription: Mapped[str | None] = mapped_column(Text)
+    allow_voice_synthesis: Mapped[bool] = mapped_column(default=False)
+    file_deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+    source: Mapped[Source] = relationship()
+    prompt: Mapped[CorpusText | None] = relationship()
+
+
 class Revision(Base):
     """Journal append-only de toutes les modifications de contenu (avant / après)."""
 

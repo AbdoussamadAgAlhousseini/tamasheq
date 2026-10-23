@@ -13,6 +13,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models import (
+    AudioRecording,
     CorpusText,
     Dataset,
     DatasetItem,
@@ -24,12 +25,13 @@ from app.models import (
     User,
 )
 
-Content = LexicalEntry | CorpusText | KnowledgeDocument
+Content = LexicalEntry | CorpusText | KnowledgeDocument | AudioRecording
 
 ENTITY: dict[type, str] = {
     LexicalEntry: "lexical_entry",
     CorpusText: "corpus_text",
     KnowledgeDocument: "knowledge_document",
+    AudioRecording: "audio_recording",
 }
 
 

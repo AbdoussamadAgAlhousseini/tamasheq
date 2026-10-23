@@ -1,4 +1,5 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic import PostgresDsn, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -22,6 +23,9 @@ class Settings(BaseSettings):
     chat_model: str = "claude-opus-5-5"
     chat_effort: Effort = "medium"
     chat_requests_per_minute: int = 10
+
+    # Fichiers audio (stockage local ; un stockage objet viendra au déploiement).
+    audio_storage_dir: Path = Path("data/audio")
 
 
 @lru_cache

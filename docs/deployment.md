@@ -20,7 +20,7 @@
 | Frontend | **Vercel** | Hébergeur natif de Next.js, déjà utilisé par le porteur du projet, CDN mondial pour des pages légères. |
 | API | Service de conteneurs managé, **région Europe** (ex. Render, Fly.io, Scaleway) | Pas de serveur à administrer. L'Europe offre une latence plus faible depuis le Mali que l'Amérique du Nord, et le RGPD comme cadre de protection. |
 | PostgreSQL | PostgreSQL managé en Europe avec sauvegardes automatiques (ex. Neon, ou l'offre du même hébergeur que l'API) | Sauvegardes et restauration à un instant donné sans administration. |
-| Audio (phase 6) | Stockage objet compatible S3 en Europe | Coût et format standard ; choix reporté à la phase 6. |
+| Audio | Répertoire persistant (`AUDIO_STORAGE_DIR`) sur un seul serveur ; stockage objet compatible S3 en Europe dès qu'il y a plusieurs instances | L'API doit disposer de FFmpeg (`ffprobe`). Sauvegarder ce répertoire avec la base. |
 | Calcul ML (phases 6–7) | GPU loué à la demande | Inutile tant qu'aucun modèle local n'est entraîné. |
 
 Alternative plus économique mais plus exigeante : un serveur unique (VPS européen) avec
