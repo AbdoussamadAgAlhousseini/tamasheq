@@ -3,8 +3,8 @@
 Infrastructure linguistique et d'intelligence artificielle pour la langue tamasheq du Mali
 (`taq`) et les savoirs touaregs, gouvernée avec les communautés. Projet non commercial.
 
-> **Statut : phase 1 (fondations).** Le squelette technique (frontend, API, base de données,
-> tests) existe. **Aucune fonctionnalité linguistique n'est disponible ni évaluée**, et aucune
+> **Statut : phase 2 (interface).** Les 9 pages, la navigation, les préférences de langue et
+> d'écriture sont en place et testées (accessibilité, mobile). **Aucune fonctionnalité linguistique n'est disponible ni évaluée**, et aucune
 > donnée tamasheq n'est présente dans ce dépôt.
 
 ## Démarrage rapide
