@@ -1,4 +1,4 @@
-# Recherche et sources — AKAL Tamasheq
+# Recherche et sources — TAMASHEQ
 
 > Statut : **Phase 0, version initiale** — date de vérification : 2026-10-23.
 > Ce document ne contient aucune donnée tamasheq. Il recense des sources, ce qu'elles
@@ -52,7 +52,7 @@ une tâche ouverte (voir fin du document).
 | Financement | ANR ON-TRAC (ANR-18-CE23-0021), Commission européenne SELMA (957017). |
 | Écarts constatés | Total non annoté du README = 669 h ; l'article annonce 671 h. Les tailles des ensembles train/valid/test ne sont pas données dans le README. Formats de fichiers non décrits dans le README (à inspecter). |
 | Analyse de licence (non juridique) | **NC** : aucune utilisation commerciale. **ND** : pas de diffusion d'œuvres dérivées. Le statut d'un modèle entraîné sur ces données au regard de la clause ND est **juridiquement incertain** ; la redistribution de segments modifiés (découpage, normalisation, réannotation) est exclue sans accord. L'accès public **n'est pas** une autorisation d'entraînement. |
-| Décisions influencées | 1) Ne pas intégrer ces fichiers au dépôt AKAL. 2) Usage prévu limité à l'évaluation interne non commerciale, en citant la source. 3) Demande écrite à Fondation Hirondelle / LIA à envisager avant tout fine-tuning. 4) Le schéma de données AKAL doit porter licence et droits par enregistrement. |
+| Décisions influencées | 1) Ne pas intégrer ces fichiers au dépôt TAMASHEQ. 2) Usage prévu limité à l'évaluation interne non commerciale, en citant la source. 3) Demande écrite à Fondation Hirondelle / LIA à envisager avant tout fine-tuning. 4) Le schéma de données TAMASHEQ doit porter licence et droits par enregistrement. |
 
 ## S3. `27Group/tamasheq_collection` (Hugging Face) — [COM] — V3
 
@@ -74,7 +74,7 @@ Autres dépôts Hugging Face repérés, **non examinés** (V3) : `YassineBenlari
 | URL | https://commonvoice.mozilla.org/fr/datasets ; https://www.mozillafoundation.org/en/common-voice/platform-and-dataset/ |
 | Constat | Aucune preuve trouvée d'un corpus Common Voice en tamasheq (`taq`). Les pages officielles n'ont pas pu être consultées. Un article sur les contributions tamazight à Common Voice (« Awal », arXiv 2510.27407, [PP], V2) mentionne le tamasheq seulement comme langue parlée au Mali et au Niger. |
 | Vigilance | Les corpus Common Voice de langues amazighes (ex. kabyle, tamazight) **ne sont pas** du tamasheq et ne doivent pas être utilisés comme tel. |
-| Utile au projet | Modèle de collecte (phrases lues, validation croisée par d'autres contributeurs, licence CC0 des enregistrements). La licence CC0 est **incompatible** avec des savoirs restreints : une collecte AKAL doit séparer phrases publiques (pouvant éventuellement aller vers Common Voice) et contenus communautaires gouvernés. |
+| Utile au projet | Modèle de collecte (phrases lues, validation croisée par d'autres contributeurs, licence CC0 des enregistrements). La licence CC0 est **incompatible** avec des savoirs restreints : une collecte TAMASHEQ doit séparer phrases publiques (pouvant éventuellement aller vers Common Voice) et contenus communautaires gouvernés. |
 | Décision | Étudier, avec les communautés, une contribution à Common Voice pour des phrases neutres ; ne jamais y verser de savoirs sensibles. |
 
 Ressource voisine : demande d'ajout du tamasheq à Tatoeba (issue GitHub `Tatoeba/tatoeba2#3351`, V2).
@@ -105,7 +105,7 @@ Ressource voisine : demande d'ajout du tamasheq à Tatoeba (issue GitHub `Tatoeb
 | V1 | Le README FLORES-200 liste **`taq_Latn` (Tamasheq, écriture latine)** et **`taq_Tfng` (Tamasheq, tifinagh)**. |
 | V2 | Les fiches de modèles NLLB-200 (600M distillé, 1.3B, 3.3B…) incluent ces codes. Licence des modèles : **CC BY-NC 4.0** (non commerciale). Métriques de l'article : chrF++ (principale) et spBLEU sur FLORES-200 devtest. |
 | Inconnu | Scores `taq_*` publiés dans les annexes (non récupérés). Qualité et variante du texte FLORES `taq_*` (à faire juger par des locuteurs). |
-| Décision | Premier candidat pour la **traduction expérimentale** et pour la translittération de référence ; à évaluer sur un jeu de test AKAL indépendant. Licence NC : à arbitrer selon le modèle économique. |
+| Décision | Premier candidat pour la **traduction expérimentale** et pour la translittération de référence ; à évaluer sur un jeu de test TAMASHEQ indépendant. Licence NC compatible avec le caractère non commercial du projet (D2). |
 
 ## S8. MMS — Massively Multilingual Speech (Meta) — [PP] + [DOC] — V2
 
@@ -149,7 +149,7 @@ clarification des droits.
   régionales) **ne correspond pas** caractère par caractère à l'orthographe latine. La conversion
   doit être un module de règles versionnées par convention, validé par des locuteurs.
 - ISO 639-3 apparentés (à vérifier sur le registre SIL) : `taq` (tamasheq), `ttq` (tawallammat),
-  `thv` (tahaggart), `thz` (tayart). Le périmètre « tamasheq » d'AKAL doit être défini avec les
+  `thv` (tahaggart), `thz` (tayart). Le périmètre « tamasheq » du projet doit être défini avec les
   communautés.
 
 ## S12. Principes CARE — [PR] — V2

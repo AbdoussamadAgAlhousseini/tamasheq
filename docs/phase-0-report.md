@@ -8,7 +8,7 @@
 
 | Élément | Constat |
 |---|---|
-| Contenu existant | Aucun code AKAL préexistant. Le dépôt ouvert dans la session (`AbdoussamadAgAlhousseini.github.io`, site OMPIDES) n'est pas concerné. Le projet est préparé comme un **nouveau dépôt** `akal-tamasheq`. |
+| Contenu existant | Aucun code TAMASHEQ préexistant. Le dépôt ouvert dans la session (`AbdoussamadAgAlhousseini.github.io`, site OMPIDES) n'est pas concerné. Le projet est préparé comme un **nouveau dépôt** `tamasheq`. |
 | Outils | Python 3.13, uv 0.11, Node 22, npm 10, pnpm 10, Docker 29, PostgreSQL 16 (client `psql`), ffmpeg 6.1, git 2.43. |
 | Matériel | 4 vCPU, 15 Go RAM, **pas de GPU**. |
 | Réseau | Accès bloqué à Hugging Face, arXiv, ACL Anthology, Common Voice, GIDA, serveurs Meta. GitHub accessible. Téléchargement de modèles impossible pour l'instant. |
@@ -28,7 +28,7 @@ expérimentale de modèles. Aucun résultat de modèle n'est donc rapporté.
 | `27Group/tamasheq_collection` (S3) | Inconnu | Inconnu | Inconnue | Inconnu | À auditer | V3 |
 | `YassineBenlaria/tamasheq_data` | Inconnu | Inconnu | Inconnue | Inconnu | À auditer | V3 |
 | Common Voice (S4) | Aucun corpus tamasheq trouvé | — | CC0 pour les corpus existants | — | Modèle méthodologique de collecte | V3 |
-| Contributions AKAL futures | Texte, audio, dictionnaire, savoirs | 0 aujourd'hui | Définie par contribution | Selon consentement explicite et séparé | **Source principale à terme** | — |
+| Contributions TAMASHEQ futures | Texte, audio, dictionnaire, savoirs | 0 aujourd'hui | Définie par contribution | Selon consentement explicite et séparé | **Source principale à terme** | — |
 
 **Constat central :** il n'existe à notre connaissance **aucun corpus tamasheq librement
 réutilisable pour l'entraînement**, ni corpus de transcriptions tamasheq pour l'ASR. La
@@ -45,10 +45,10 @@ constitution d'un corpus communautaire gouverné est donc le cœur du projet, pa
 | ASR | MMS-1B-all + adaptateur | `taq` non confirmé (S8) | CC BY-NC 4.0 | 1B paramètres, CPU lent | À vérifier puis évaluer |
 | ASR / ST | wav2vec 2.0 LIA tamasheq (S10) | Pré-entraîné sur ≈234–243 h de tamasheq | Apache-2.0 (Niger-Mali, V2) | Fine-tuning : GPU | Meilleur encodeur candidat, nécessite des transcriptions |
 | TTS | MMS-TTS `taq` (VITS) | Listé (V2) | CC BY-NC 4.0 | Léger, CPU possible | À faire juger par des locuteurs |
-| TTS | Voix AKAL dédiée (VITS ou équivalent) | — | Propre, avec consentement des voix | GPU pour l'entraînement | Phase 6–7, si données consenties |
+| TTS | Voix TAMASHEQ dédiée (VITS ou équivalent) | — | Propre, avec consentement des voix | GPU pour l'entraînement | Phase 6–7, si données consenties |
 
 Règle : un modèle ne sera mis en avant pour une fonction qu'après un score reproductible sur
-le jeu de test AKAL et un jugement humain favorable.
+le jeu de test TAMASHEQ et un jugement humain favorable.
 
 ## 4. Faits vérifiés et éléments à confirmer
 
@@ -120,15 +120,17 @@ Justifications :
 | 2 — Interface | 9 pages, navigation, sélecteur d'écriture et de langue, états chargement/erreur | Lighthouse accessibilité ≥ 90 ; affichage tifinagh correct sur Android/iOS testés ; utilisable à 360 px de large |
 | 3 — Premier assistant | Adaptateur LLM côté serveur, limitation, gestion d'erreurs, bannière « capacité non vérifiée » | Clés jamais exposées (test) ; délais et pannes gérés ; jeu de 50 questions de référence évalué par au moins 2 locuteurs, résultats publiés |
 | 4 — Corpus et dictionnaire | Schéma de données (provenance, consentement, licence, statuts brut/en attente/validé/restreint/retiré), import/export, validation, historique | Retrait d'une contribution propagé et tracé ; aucune entrée « validée » sans réviseur ; tests de normalisation |
-| 5 — Traduction et RAG | Traducteur expérimental (NLLB et/ou LLM), RAG filtré par permissions avec citations | chrF++ et évaluation humaine sur jeu de test AKAL ; test prouvant qu'un document restreint n'est jamais récupéré pour un utilisateur non autorisé |
+| 5 — Traduction et RAG | Traducteur expérimental (NLLB et/ou LLM), RAG filtré par permissions avec citations | chrF++ et évaluation humaine sur jeu de test TAMASHEQ ; test prouvant qu'un document restreint n'est jamais récupéré pour un utilisateur non autorisé |
 | 6 — Voix | Enregistrement navigateur, correction de transcriptions, évaluation MMS/wav2vec | WER/CER publiés avec normalisation documentée ; TTS jugée par locuteurs avant mise en ligne |
 | 7 — Spécialisation | Jeux de données autorisés, comparaison d'adaptations (LoRA, fine-tuning) | Gain mesuré sur test isolé, sans fuite ; coût justifié |
 | 8 — Bêta | Audit de sécurité, sauvegardes testées, documentation des limites | Restauration testée ; retours de locuteurs intégrés avant diffusion large |
 
 ## 8. Décisions nécessitant votre validation
 
-- **D1. Dépôt** : nom `akal-tamasheq`, **privé** au départ ? (recommandé : privé jusqu'à la mise en place de la gouvernance)
-- **D2. Caractère commercial** : AKAL est-il strictement non commercial ? Cela conditionne l'usage de NLLB, MMS et IWSLT (tous NC).
+> **Mise à jour 2026-10-23 :** réponses consignées dans [decisions.md](decisions.md).
+
+- **D1. Dépôt** : nom `tamasheq`, **privé** au départ ? (recommandé : privé jusqu'à la mise en place de la gouvernance)
+- **D2. Caractère commercial** : TAMASHEQ est-il strictement non commercial ? Cela conditionne l'usage de NLLB, MMS et IWSLT (tous NC).
 - **D3. Périmètre linguistique** : quelles variantes en priorité (tamasheq du Mali : quelles régions ?), et quels codes ISO couvrir (`taq` seul, ou aussi `ttq`, `thv`, `thz`) ?
 - **D4. Conventions orthographiques** : quelle convention latine et quel tifinagh comme formes de référence initiales (sans exclure les autres) ? Qui sont les réviseurs habilités ?
 - **D5. Gouvernance** : quelle instance communautaire valide l'accès aux savoirs restreints et les retraits ?
