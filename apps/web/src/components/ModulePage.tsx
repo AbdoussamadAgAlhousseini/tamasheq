@@ -10,10 +10,13 @@ export function ModulePage({
   module,
   planned,
   limits,
+  children,
 }: {
   module: Module;
   planned: ReactNode;
   limits: ReactNode;
+  /** Zone interactive du module, affichée seulement quand le module existe. */
+  children?: ReactNode;
 }) {
   return (
     <>
@@ -26,6 +29,7 @@ export function ModulePage({
       <div className="mt-6">
         <CapabilityBadge names={module.capabilities} />
       </div>
+      {children && <div className="mt-8">{children}</div>}
       <section className="mt-10" aria-labelledby="planned">
         <h2 id="planned" className="text-xl font-semibold">
           <T fr="Ce qui est prévu" en="What is planned" />

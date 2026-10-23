@@ -16,8 +16,8 @@ export default function Home() {
       </p>
       <p role="note" className="mt-6 rounded-md border border-line bg-surface p-4 text-sm">
         <T
-          fr="Le projet est en construction. Aucune fonction linguistique n'est encore disponible : l'état de chaque module ci-dessous est celui que déclare le serveur."
-          en="The project is under construction. No language feature is available yet: the status of each module below is the one reported by the server."
+          fr="Le projet est en construction. Aucune fonction linguistique n'a encore été évaluée : l'état de chaque module ci-dessous est celui que déclare le serveur."
+          en="The project is under construction. No language feature has been evaluated yet: the status of each module below is the one reported by the server."
         />
       </p>
 

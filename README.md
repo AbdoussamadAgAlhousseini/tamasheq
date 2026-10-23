@@ -3,8 +3,9 @@
 Infrastructure linguistique et d'intelligence artificielle pour la langue tamasheq du Mali
 (`taq`) et les savoirs touaregs, gouvernée avec les communautés. Projet non commercial.
 
-> **Statut : phase 2 (interface).** Les 9 pages, la navigation, les préférences de langue et
-> d'écriture sont en place et testées (accessibilité, mobile). **Aucune fonctionnalité linguistique n'est disponible ni évaluée**, et aucune
+> **Statut : phase 3 (premier assistant).** Interface complète et assistant expérimental
+> (activé si une clé `ANTHROPIC_API_KEY` est fournie). Ses capacités en tamasheq **ne sont pas
+> évaluées** : protocole dans [docs/evaluation.md](docs/evaluation.md). **Aucune fonctionnalité linguistique n'est disponible ni évaluée**, et aucune
 > donnée tamasheq n'est présente dans ce dépôt.
 
 ## Démarrage rapide
@@ -24,6 +25,7 @@ Détails, tests et contrôles : [docs/architecture.md](docs/architecture.md).
 - [Recherche et sources](docs/research-and-sources.md) : sources, niveau de vérification, licences.
 - [Registre des décisions](docs/decisions.md)
 - [Architecture](docs/architecture.md) · [Déploiement](docs/deployment.md)
+- [Évaluation](docs/evaluation.md) · [Sécurité](docs/security.md) · [Limites connues](docs/limitations.md)
 
 ## Principes
 

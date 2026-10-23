@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { Chat } from "@/components/Chat";
 import { ModulePage } from "@/components/ModulePage";
 import { T } from "@/components/T";
 import { getModule } from "@/lib/modules";
@@ -36,8 +37,8 @@ export default function Page() {
         <ul>
           <li>
             <T
-              fr="Aucun modèle d'IA n'a encore été évalué en tamasheq. L'assistant ne sera ouvert qu'avec une mention claire de ses capacités mesurées."
-              en="No AI model has been evaluated in Tamasheq yet. The assistant will only open with a clear statement of its measured abilities."
+              fr="Aucun modèle d'IA n'a encore été évalué en tamasheq. Tant que l'évaluation par des locuteurs n'est pas publiée, l'assistant reste expérimental et chaque réponse est marquée comme non vérifiée."
+              en="No AI model has been evaluated in Tamasheq yet. Until the evaluation by speakers is published, the assistant stays experimental and every answer is marked as not verified."
             />
           </li>
           <li>
@@ -48,12 +49,14 @@ export default function Page() {
           </li>
           <li>
             <T
-              fr="Les conversations ne servent pas à entraîner un modèle."
-              en="Conversations are not used to train a model."
+              fr="TAMASHEQ n'enregistre pas les conversations et ne s'en sert pas pour entraîner un modèle. Elles sont transmises au fournisseur du modèle (Anthropic) pour produire la réponse : n'y écrivez pas d'informations personnelles ni de savoirs restreints."
+              en="TAMASHEQ does not store conversations or use them to train a model. They are sent to the model provider (Anthropic) to produce the answer: do not write personal information or restricted knowledge in them."
             />
           </li>
         </ul>
       }
-    />
+    >
+      <Chat />
+    </ModulePage>
   );
 }

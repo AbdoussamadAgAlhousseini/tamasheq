@@ -50,7 +50,21 @@ Choix techniques :
 |---|---|
 | `GET /health` | État de l'API et de la base (503 si la base est indisponible) |
 | `GET /api/v1/capabilities` | Liste des fonctions et de leur statut (`not_available`, `experimental`, `evaluated`). Toutes sont `not_available` en phase 1. |
+| `POST /api/v1/chat` | Assistant expérimental : reçoit l'historique de la session, renvoie la réponse, le modèle utilisé, `status: "experimental"` et `verified: false` |
 | `GET /docs` | Documentation OpenAPI générée |
+
+## Couche IA
+
+`app/ai/chat.py` définit l'interface `ChatProvider` ; `app/ai/anthropic_chat.py` l'implémente
+avec le SDK officiel `anthropic`. Changer de fournisseur revient à écrire une autre
+implémentation, sans toucher à l'API ni au frontend.
+
+Réglages actuels (variables d'environnement) : modèle `claude-opus-5-5`, effort `medium`
+(réflexion adaptative toujours active sur ce modèle), repli automatique côté serveur
+(`fallbacks: "default"`) si le modèle décline une requête. Les consignes données au modèle sont
+dans `app/ai/prompts.py` ; toute modification exige une nouvelle passe d'évaluation.
+
+Sans `ANTHROPIC_API_KEY`, l'assistant est simplement `not_available`.
 
 L'endpoint `capabilities` est la source de vérité de ce que l'interface affiche comme
 disponible : l'interface ne doit pas annoncer une fonction que l'API déclare indisponible.

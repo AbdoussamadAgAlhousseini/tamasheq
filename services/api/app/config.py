@@ -1,7 +1,9 @@
 from functools import lru_cache
 
-from pydantic import PostgresDsn
+from pydantic import PostgresDsn, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from app.ai.anthropic_chat import Effort
 
 
 class Settings(BaseSettings):
@@ -14,6 +16,12 @@ class Settings(BaseSettings):
         "postgresql+psycopg://tamasheq:tamasheq@localhost:5432/tamasheq"
     )
     cors_origins: list[str] = ["http://localhost:3000"]
+
+    # Assistant : désactivé tant qu'aucune clé n'est fournie.
+    anthropic_api_key: SecretStr | None = None
+    chat_model: str = "claude-opus-5-5"
+    chat_effort: Effort = "medium"
+    chat_requests_per_minute: int = 10
 
 
 @lru_cache
